@@ -1,57 +1,7 @@
 <template>
     <VueSlickCarousel v-bind="settings">
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
-        </div>
-        <div>
-            <router-link v-for="(item, index) in allItensCarousel" v-bind:key="index" :to="item.id" :title="item.name">
+        <div v-for="(item, index) in allItensCarousel" v-bind:key="index">
+            <router-link :to="item.id" :title="item.name">
                 <img :src="item.image" :alt="item.name">
             </router-link>
         </div>
@@ -77,7 +27,6 @@ export default {
             settings: {
                 slidesToShow: 5,
                 slideToScroll: 1,
-                //adaptiveHeight: true,
                 responsive: [
                 {
                     breakpoint: 1280,
