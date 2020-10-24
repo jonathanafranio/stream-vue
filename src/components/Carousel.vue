@@ -1,11 +1,18 @@
 <template>
-    <VueSlickCarousel v-bind="settings">
-        <div v-for="(item, index) in allItensCarousel" v-bind:key="index">
-            <router-link :to="item.id" :title="item.name">
-                <img :src="item.image" :alt="item.name">
-            </router-link>
+    <div>
+        <VueSlickCarousel v-if="carousel" v-bind="settings">
+            <div v-for="(item, index) in allItensCarousel" v-bind:key="index">
+                <router-link :to="item.id" :title="item.name">
+                    <img :src="item.image" :alt="item.name">
+                </router-link>
+            </div>
+        </VueSlickCarousel>
+        <div class="is-block is-center" v-else>
+            <span class="icon is-large">
+                <i class="fas fa-spinner fa-3x fa-pulse"></i>
+            </span>
         </div>
-    </VueSlickCarousel>
+    </div>
 </template>
 
 <script>
@@ -71,4 +78,8 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.is-center
+    padding-top: 50px
+    text-align: center
+
 </style>
