@@ -3,6 +3,7 @@
         <section class="hero is-dark">
             <div class="hero-body">
                 <div class="container">
+                    <Breadcrumb :breadcrumb="bread" />
                     <h1 class="title">{{serie.name}}</h1>
                     <Carousel :carousel="temporadas" />
                 </div>
@@ -25,12 +26,14 @@
 </template>
 
 <script>
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import Carousel from "@/components/Carousel.vue";
 import EpisodesList from "@/components/EpisodesList.vue";
 
 export default {
     name: "Serie",
     components: {
+        Breadcrumb,
         Carousel,
         EpisodesList
     },
@@ -42,6 +45,9 @@ export default {
                 count: 0,
                 pages: 0
             },
+            bread: [
+                { link: '/', name: 'Home', icon: 'fas fa-home' }
+            ],
             temporadas: [],
             epsodios: [],
             paged: 1
@@ -62,6 +68,8 @@ export default {
                 this.serie.name = res.name;
                 this.serie.count = res.count;
                 this.serie.pages = Math.ceil(res.count / 10);
+
+                this.bread.push({ link: `/serie/${this.serie.id}`, name: this.serie.name, icon: 'fas fa-tv' });
             });
         },
         async fetchTemporadas() {

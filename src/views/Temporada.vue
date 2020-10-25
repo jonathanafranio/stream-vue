@@ -3,6 +3,7 @@
         <section class="hero is-dark">
             <div class="hero-body">
                 <div class="container">
+                    <Breadcrumb :breadcrumb="bread" />
                     <h1 class="title">{{temporada.serie.name}}</h1>
                     <h2 class="subtitle">{{temporada.name}}</h2>
                 </div>
@@ -25,14 +26,15 @@
 </template>
 
 <script>
+import Breadcrumb from "@/components/Breadcrumb.vue";
 import EpisodesList from "@/components/EpisodesList.vue";
 
 export default {
     name: "Temporada",
     components: {
+        Breadcrumb,
         EpisodesList
     },
-
     data() {
         return {
             temporada: {
@@ -45,6 +47,9 @@ export default {
                     name: ''
                 }
             },
+            bread: [
+                { link: '/', name: 'Home', icon: 'fas fa-home' }
+            ],
             epsodios: [],
             paged: 1
         };
@@ -68,6 +73,9 @@ export default {
                     id: res.acf.serie.term_id,
                     name: res.acf.serie.name
                 }
+
+                this.bread.push({ link: `/serie/${this.temporada.serie.id}`, name: this.temporada.serie.name, icon: 'fas fa-tv' });
+                this.bread.push({ link: `/temporada/${this.temporada.id}`, name: this.temporada.name, icon: 'fas fa-film' })
             });
         },
         async fetchVideos(){            
@@ -91,7 +99,9 @@ export default {
     created() {
         this.fetchInfoTemporadas();
         this.setPaginator();        
-        this.fetchVideos();       
+        this.fetchVideos(); 
+        
+        //.push({ link: `/temporada/${temporada.id}`, name: temporada.name, icon: 'fas fa-film' })  
 
     },
     computed: {
