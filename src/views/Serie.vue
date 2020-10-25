@@ -36,6 +36,52 @@
                         </span>
                         {{item.name}}
                     </router-link>
+                    
+                    <div class="panel-block mt-1" v-if="this.serie.count>10">
+                        <nav class="pagination is-centered is-small" role="navigation" aria-label="pagination">
+                            <router-link
+                             v-if="paged>1"
+                             :to="`/serie/${serie.id}`"
+                             class="pagination-previous">
+                                primeira
+                            </router-link>
+
+                            <router-link
+                             v-if="paged<serie.pages"
+                             :to="`/serie/${serie.id}/?page=${serie.pages}`"
+                             class="pagination-next">
+                                última
+                            </router-link>
+
+                            <ul class="pagination-list">
+                                <li
+                                 v-for="(pagination, index) in pageNav"
+                                 v-bind:key="index">
+                                    <a
+                                     v-if="pagination.page > 1"
+                                     :href="`/serie/${serie.id}/?page=${pagination.page}`"
+                                     class="pagination-link"
+                                     :class="{'is-current': pagination.active}">
+                                        {{pagination.page}}
+                                    </a>
+                                    <a
+                                     v-else
+                                     :href="`/serie/${serie.id}/`"
+                                     class="pagination-link"
+                                     :class="{'is-current': pagination.active}">
+                                        {{pagination.page}}
+                                    </a>
+
+                                </li>
+                                <!--<li><span class="pagination-ellipsis">&hellip;</span></li>
+                                <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
+                                <li><a class="pagination-link" aria-label="Goto page 45">2</a></li>
+                                <li><a class="pagination-link" aria-label="Goto page 86">3</a></li>
+                                <li><span class="pagination-ellipsis">&hellip;</span></li>-->
+                                
+                            </ul>
+                        </nav>
+                    </div>
                 </article>
             </div>
             <div class="column is-two-thirds">
@@ -64,12 +110,43 @@ export default {
                 pages: 0
             },
             temporadas: [],
-            epsodios: []
+            epsodios: [],
+            pageNav: [],
+            paged: 1
         };
     },
     methods: {
-        fetchInfoSerie(){
-            fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/series/${this.serie.id}`)
+        setPaginator() {
+            let paramsGet = window.location.search;
+            let pageArr = [];
+            if(paramsGet.indexOf('?page') > -1) {
+                paramsGet = +paramsGet.split('=')[1];
+                let pagePrev = paramsGet - 1;
+                let pageNext = paramsGet + 1;
+
+                if(pagePrev > 0) pageArr.push({page: pagePrev, active: false});
+                pageArr.push({page: paramsGet, active: true});
+                if(pageNext <= this.serie.pages){
+                    pageArr.push({page: pageNext, active: false});
+                }
+                if(paramsGet == this.serie.pages){
+                    let pageTwoPrev = pagePrev - 1;
+                    if(pageTwoPrev > 0) {
+                        pageArr.unshift({page: pageTwoPrev, active: false});
+                    }
+                }
+                this.paged = paramsGet
+            } else {
+                pageArr.push(
+                    {page: 1, active: true},
+                    {page: 2, active: false}
+                );
+                if(this.serie.pages > 2) pageArr.push({page: 3, active: false});
+            }
+            this.pageNav = pageArr;
+        },
+        async fetchInfoSerie(){
+            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/series/${this.serie.id}`)
             .then(res => res.json())
             .then(res => {
                 this.serie.name = res.name;
@@ -93,6 +170,7 @@ export default {
         } else {
             this.fetchInfoSerie();
         }
+        this.setPaginator()
 
 
         fetch("http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas")
@@ -111,7 +189,7 @@ export default {
             }
         });
 
-        fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos?series=${this.serie.id}&order=asc`)
+        fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos?series=${this.serie.id}&order=asc&page=${this.paged}`)
         .then(res => res.json())
         .then(resVideos => {
             const videos = resVideos.map(video => {
@@ -144,4 +222,8 @@ export default {
 
 .panel
     background-color: #fff
+
+.pagination
+    width: 100%
+    text-transform: uppercase
 </style>
