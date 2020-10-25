@@ -64,45 +64,50 @@ export default {
                 this.serie.count = res.count;
                 this.serie.pages = Math.ceil(res.count / 10);
             });
+        },
+        async fetchTemporadas() {
+            await fetch("http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas")
+            .then(res => res.json())
+            .then(res => {
+                for (let a = 0; a < res.length; a++) {
+                    let serieIdParent = res[a].acf.serie.term_id;
+                    if (serieIdParent == this.serie.id) {
+                        let temporada = {
+                            image: res[a].acf.imagem,
+                            name: res[a].name,
+                            id: `/serie/${this.serie.id}/temporada/${res[a].id}`
+                        };
+                        this.temporadas.unshift(temporada);
+                    }
+                }
+            });
+        },
+        async fetchVideos(){            
+            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos?series=${this.serie.id}&order=asc&page=${this.paged}`)
+            .then(res => res.json())
+            .then(resVideos => {
+                const videos = resVideos.map(video => {
+                    const movie = {
+                        id: video.id,
+                        name: video.title.rendered,
+                        //url_video: video.acf.url_video,
+                        serie_id: video.series[0],
+                        temporada_id: video.temporadas[0]
+                    }
+                    return movie
+                })
+                this.epsodios = videos
+            })
         }
     },
     created() {
         this.fetchInfoSerie();
         this.setPaginator();
         
+        this.fetchTemporadas();
+        this.fetchVideos();
+        
 
-
-        fetch("http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas")
-        .then(res => res.json())
-        .then(res => {
-            for (let a = 0; a < res.length; a++) {
-                let serieIdParent = res[a].acf.serie.term_id;
-                if (serieIdParent == this.serie.id) {
-                    let temporada = {
-                        image: res[a].acf.imagem,
-                        name: res[a].name,
-                        id: `/serie/${this.serie.id}/temporada/${res[a].id}`
-                    };
-                    this.temporadas.unshift(temporada);
-                }
-            }
-        });
-
-        fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos?series=${this.serie.id}&order=asc&page=${this.paged}`)
-        .then(res => res.json())
-        .then(resVideos => {
-            const videos = resVideos.map(video => {
-                const movie = {
-                    id: video.id,
-                    name: video.title.rendered,
-                    //url_video: video.acf.url_video,
-                    serie_id: video.series[0],
-                    temporada_id: video.temporadas[0]
-                }
-                return movie
-            })
-            this.epsodios = videos
-        })
     },
     computed: {
         allEpsodios(){
