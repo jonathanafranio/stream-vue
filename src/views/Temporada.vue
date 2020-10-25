@@ -3,8 +3,8 @@
         <section class="hero is-dark">
             <div class="hero-body">
                 <div class="container">
-                    <h1 class="title">{{serie.name}}</h1>
-                    <Carousel :carousel="temporadas" />
+                    <h1 class="title">{{temporada.serie.name}}</h1>
+                    <h2 class="subtitle">{{temporada.name}}</h2>
                 </div>
             </div>
         </section>
@@ -13,9 +13,9 @@
                 <div class="columns is-desktop">
                     <div class="column">
                         <EpisodesList
-                         :epsodios="epsodios"
-                         :count="serie.count"
-                         :pagesCount="serie.pages"
+                         :epsodios="allEpsodios"
+                         :count="temporada.count"
+                         :pagesCount="temporada.pages"
                          :pageActive="paged" />
                     </div>
                 </div>
@@ -25,24 +25,26 @@
 </template>
 
 <script>
-import Carousel from "@/components/Carousel.vue";
 import EpisodesList from "@/components/EpisodesList.vue";
 
 export default {
-    name: "Serie",
+    name: "Temporada",
     components: {
-        Carousel,
         EpisodesList
     },
+
     data() {
         return {
-            serie: {
-                id: this.$route.params.serie_id,
+            temporada: {
+                id: this.$route.params.temporada_id,
                 name: '',
                 count: 0,
-                pages: 0
+                pages: 0,
+                serie: {
+                    id: '',
+                    name: ''
+                }
             },
-            temporadas: [],
             epsodios: [],
             paged: 1
         };
@@ -55,34 +57,21 @@ export default {
                 this.paged = paramsGet
             }
         },
-        async fetchInfoSerie(){
-            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/series/${this.serie.id}`)
+        async fetchInfoTemporadas(){
+            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas/${this.temporada.id}`)
             .then(res => res.json())
             .then(res => {
-                this.serie.name = res.name;
-                this.serie.count = res.count;
-                this.serie.pages = Math.ceil(res.count / 10);
-            });
-        },
-        async fetchTemporadas() {
-            await fetch("http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas")
-            .then(res => res.json())
-            .then(res => {
-                for (let a = 0; a < res.length; a++) {
-                    let serieIdParent = res[a].acf.serie.term_id;
-                    if (serieIdParent == this.serie.id) {
-                        let temporada = {
-                            image: res[a].acf.imagem,
-                            name: res[a].name,
-                            id: `/temporada/${res[a].id}`
-                        };
-                        this.temporadas.unshift(temporada);
-                    }
+                this.temporada.name = res.name;
+                this.temporada.count = res.count;
+                this.temporada.pages = Math.ceil(res.count / 10);
+                this.temporada.serie = {
+                    id: res.acf.serie.term_id,
+                    name: res.acf.serie.name
                 }
             });
         },
         async fetchVideos(){            
-            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos?series=${this.serie.id}&order=asc&page=${this.paged}`)
+            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos?temporadas=${this.temporada.id}&order=asc&page=${this.paged}`)
             .then(res => res.json())
             .then(resVideos => {
                 const videos = resVideos.map(video => {
@@ -100,12 +89,9 @@ export default {
         }
     },
     created() {
-        this.fetchInfoSerie();
-        this.setPaginator();
-        
-        this.fetchTemporadas();
-        this.fetchVideos();
-        
+        this.fetchInfoTemporadas();
+        this.setPaginator();        
+        this.fetchVideos();       
 
     },
     computed: {

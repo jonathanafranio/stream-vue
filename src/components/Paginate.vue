@@ -42,9 +42,7 @@
             active: { type: Number, required: true },
         },
         created() {
-            this.pathUrl = window.location.pathname
-            console.log('path',this.pathUrl);
-            
+            this.pathUrl = window.location.pathname            
         }
     }
 </script>
