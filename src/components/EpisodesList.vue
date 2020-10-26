@@ -14,7 +14,7 @@
         <template v-if="allEpsodios.length">
             <router-link
             v-for="(item, index) in allEpsodios"
-            :to="`/serie/${item.serie_id}/temporada/${item.temporada_id}/epsodio/${item.id}`"
+            :to="`/epsodio/${item.id}`"
             :title="item.name" class="panel-block"
             v-bind:key="index">
                 <span class="panel-icon">
@@ -46,8 +46,7 @@
             count: { type: Number, required: true },
             pagesCount: { type: Number, default: () => 1 },
             pageActive: { type: Number, default: () => 1 }            
-        },
-        
+        },        
         computed: {
             allEpsodios() {
                 return this.epsodios;

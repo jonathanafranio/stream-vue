@@ -22,6 +22,12 @@ const routes = [
         component: () => import(/* webpackChunkName: "temporada" */ '../views/Temporada.vue')
     },
     {
+        path: '/epsodio/:ep_id',
+        name: 'Epsodios',
+        props: true,
+        component: () => import(/* webpackChunkName: "epsodio" */ '../views/Epsodios.vue')
+    },
+    {
         path: '/about',
         name: 'About',
         // route level code-splitting
