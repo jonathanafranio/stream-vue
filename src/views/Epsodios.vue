@@ -5,7 +5,33 @@
                 <div class="container">
                     <Breadcrumb :breadcrumb="bread" />
                     <h1 class="title">{{serie.name}}</h1>
-                    <h2 class="subtitle">{{temporada.name}} - {{video.name}}</h2>
+                    <h2 class="subtitle">{{temporada.name}}</h2>
+                    <div class="level">
+                        <div class="level-left">
+                            <h3 class="subtitle is-4">{{video.name}}</h3>
+                        </div>
+
+                        <div class="level-right">
+                            <div class="level-item">                                
+                                <div class="field">
+                                    <input id="autoplay" type="checkbox" class="switch is-rounded is-info is-rtl" v-model="autoreload">
+                                    <label for="autoplay">Reprodução automática</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section is-dark">
+            <div class="container is-fullhd">
+                <div class="columns is-desktop">
+                    
+                    <video-player v-if="playerOptions.sources[0].src" class="column is-12 vjs-custom-skin"
+                     ref="videoPlayer"
+                     :options="playerOptions"
+                     :playsinline="true">
+                    </video-player>
                 </div>
             </div>
         </section>
@@ -14,10 +40,13 @@
 
 <script>
 import Breadcrumb from "@/components/Breadcrumb.vue";
+import 'video.js/dist/video-js.css';
+import { videoPlayer } from 'vue-video-player';
 export default {
     name: "Epsodios",
     components: {
-        Breadcrumb,        
+        Breadcrumb,
+        videoPlayer 
     },
     data() {
         return {
@@ -40,6 +69,18 @@ export default {
                     previous: null,
                     next: null
                 }
+            },
+            autoreload: true,
+            playerOptions: {
+                height: 760,
+                autoplay: false,
+                muted: false,
+                language: 'pt-br',
+                playbackRates: [0.7, 1.0, 1.5, 2.0],
+                sources: [{
+                    type: "video/mp4",
+                    src: null,
+                }]
             }
         }
     },
@@ -89,6 +130,8 @@ export default {
                     icon: 'fas fa-play'
                 })
                 this.video.name = res.title.rendered;
+                this.playerOptions.sources[0].src = res.acf.url_video;
+                //this.playerOptions.autoplay = true;
                 this.video.url = res.acf.url_video;
             });
         }
@@ -100,6 +143,16 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">
+@import '~bulma-switch'
 
+.is-dark
+    background: #363636
+    color: #fff
+.video-js
+    width: 100%
+    .vjs-big-play-button
+        top: 50%
+        left: 50%
+        transform: translateY(-50%) translateX(-50%)
 </style>
