@@ -1,4 +1,12 @@
 # stream-vue
+Stream com séries e filmes favoritos, puxando o conteúdo de uma API REST de um site em Wordpress.
+
+Aqui é usado:
+- Bulma para css;
+- Font Awesome para os ícones;
+- Vue Router;
+- Slick para o carousel;
+- Vue-Video-Player para o play dos vídeos;
 
 ## Project setup
 ```
