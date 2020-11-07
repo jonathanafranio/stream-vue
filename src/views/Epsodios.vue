@@ -27,11 +27,35 @@
             <div class="container is-fullhd">
                 <div class="columns is-desktop">
                     
-                    <video-player v-if="playerOptions.sources[0].src" class="column is-12 vjs-custom-skin"
+                    <video-player v-if="playerOptions.sources[0].src" class="column is-three-fifths vjs-custom-skin"
                      ref="videoPlayer"
                      :options="playerOptions"
                      :playsinline="true">
                     </video-player>
+
+                    <div class="column prev-wrap">
+                        <a
+                         v-if="video.navegacao.previous"
+                         :href="`/epsodio/${video.navegacao.previous}`"
+                         class="has-text-white">
+                            <span class="icon is-medium">
+                                <i class="fas fa-2x fa-caret-square-left"></i> Anterior
+                            </span>
+                        </a>
+                    </div>
+
+                    <div class="column next-wrap">
+                        <a
+                         v-if="video.navegacao.next"
+                         :href="`/epsodio/${video.navegacao.next}`"
+                         class="has-text-white">
+                            
+                            <span class="icon is-medium">
+                                Próximo <i class="fas fa-2x fa-caret-square-right"></i>
+                            </span>
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </section>
@@ -72,7 +96,7 @@ export default {
             },
             autoreload: true,
             playerOptions: {
-                height: 760,
+                height: 450,
                 autoplay: false,
                 muted: false,
                 language: 'pt-br',
@@ -155,4 +179,24 @@ export default {
         top: 50%
         left: 50%
         transform: translateY(-50%) translateX(-50%)
+
+.prev-wrap,
+.next-wrap
+    display: flex
+    align-items: center
+    justify-content: center
+    .fas
+        margin: 0 10px
+
+.prev-wrap    
+    @media screen and (min-width: 1024px)
+        order: 1
+
+.video-player
+    @media screen and (min-width: 1024px)
+        order: 2
+
+.next-wrap
+    @media screen and (min-width: 1024px)
+        order: 3
 </style>
