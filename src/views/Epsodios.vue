@@ -14,7 +14,7 @@
                         <div class="level-right">
                             <div class="level-item">                                
                                 <div class="field">
-                                    <input id="autoplay" type="checkbox" class="switch is-rounded is-info is-rtl" v-model="autoreload">
+                                    <input id="autoplay" type="checkbox" class="switch is-rounded is-info is-rtl" v-model="autoreload" @change="changeAutoReload" >
                                     <label for="autoplay">Reprodução automática</label>
                                 </div>
                             </div>
@@ -27,10 +27,13 @@
             <div class="container is-fullhd">
                 <div class="columns is-desktop">
                     
-                    <video-player v-if="playerOptions.sources[0].src" class="column is-three-fifths vjs-custom-skin"
+                    <video-player
+                     v-if="playerOptions.sources[0].src" 
+                     class="column is-three-fifths vjs-custom-skin"
                      ref="videoPlayer"
                      :options="playerOptions"
-                     :playsinline="true">
+                     :playsinline="true" 
+                     @ended="onPlayerEnded()">
                     </video-player>
 
                     <div class="column prev-wrap">
@@ -158,11 +161,22 @@ export default {
                 //this.playerOptions.autoplay = true;
                 this.video.url = res.acf.url_video;
             });
+        },
+        changeAutoReload(){
+            !this.autoreload ? localStorage.setItem('autoreload', false) : localStorage.removeItem('autoreload');
+        },
+        onPlayerEnded(){
+            if(this.autoreload && this.video.navegacao.next) {
+                window.location.pathname = `/epsodio/${this.video.navegacao.next}`;
+            }
         }
     },
     created() {
         this.fetctBread();
         this.fetctVideo();
+        if(localStorage.getItem('autoreload')!=null){
+            this.autoreload = false
+        }
     }
 }
 </script>
