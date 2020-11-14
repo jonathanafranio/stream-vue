@@ -24,7 +24,7 @@ export default {
         };
     },
     created() {
-        fetch("http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/series")
+        fetch("https://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/series")
         .then(res => res.json())
         .then(res => {
             let carouselArray = res.map(item => {

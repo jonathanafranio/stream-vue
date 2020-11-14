@@ -113,7 +113,7 @@ export default {
     },
     methods: {
         async fetctBread() {
-            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas?post=${this.video.id}`)
+            await fetch(`https://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas?post=${this.video.id}`)
             .then(res => res.json())
             .then(res => {
                 this.serie.id = res[0].acf.serie.term_id;
@@ -138,7 +138,7 @@ export default {
             })
         },
         async fetctVideo(){
-            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos/${this.video.id}`)
+            await fetch(`https://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos/${this.video.id}`)
             .then(res => res.json())
             .then(res => {
                 console.log('video',res)

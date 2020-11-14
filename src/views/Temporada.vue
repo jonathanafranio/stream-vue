@@ -63,7 +63,7 @@ export default {
             }
         },
         async fetchInfoTemporadas(){
-            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas/${this.temporada.id}`)
+            await fetch(`https://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/temporadas/${this.temporada.id}`)
             .then(res => res.json())
             .then(res => {
                 this.temporada.name = res.name;
@@ -79,7 +79,7 @@ export default {
             });
         },
         async fetchVideos(){            
-            await fetch(`http://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos?temporadas=${this.temporada.id}&order=asc&page=${this.paged}`)
+            await fetch(`https://psdtohtmlandcss.com.br/stream-vue/wordpress/wp-json/wp/v2/videos?temporadas=${this.temporada.id}&order=asc&page=${this.paged}`)
             .then(res => res.json())
             .then(resVideos => {
                 const videos = resVideos.map(video => {
