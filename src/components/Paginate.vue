@@ -2,13 +2,13 @@
     <nav class="pagination is-centered is-small" role="navigation" aria-label="pagination">
         <a
          v-if="active>1"
-         :href="`${pathUrl}?page=${active-1}`"
+         :href="`${pathUrl}/page/${active-1}`"
          class="pagination-previous">
             anterior
         </a>
         <a
          v-if="active<pages"
-         :href="`${pathUrl}?page=${active+1}`"
+         :href="`${pathUrl}/page/${active+1}`"
          class="pagination-next">
             próxima
         </a>
@@ -17,7 +17,7 @@
             <li v-for="n in pages" v-bind:key="n">
                 <a
                  v-if="n > 1"
-                 :href="`${pathUrl}?page=${n}`"
+                 :href="`${pathUrl}/page/${n}`"
                  class="pagination-link"
                  :class="{'is-current': n === active}">
                     {{ n }}
@@ -42,7 +42,13 @@
             active: { type: Number, required: true },
         },
         created() {
-            this.pathUrl = window.location.pathname            
+            let pathName = window.location.pathname
+            console.log('indexOf', pathName.indexOf('/page/'))
+            pathName.indexOf('/page/') > -1 ? pathName = pathName.split('/page/')[0] : pathName
+            console.log('pathName', pathName.split('/page/')[0])
+            
+            this.pathUrl = pathName
+
         }
     }
 </script>

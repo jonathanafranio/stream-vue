@@ -14,12 +14,28 @@ const routes = [
         path: '/serie/:serie_id',
         name: 'Serie',
         component: () => import(/* webpackChunkName: "serie" */ '../views/Serie.vue'),
+        children: [
+            {
+                path: 'page/:page',
+                component: () => import(/* webpackChunkName: "serie" */ '../views/Serie.vue'),
+                props: true,
+                name: 'SeriePagina'
+            },
+        ]
     },
     {
         path: '/temporada/:temporada_id',
         name: 'Temporada',
         props: true,
-        component: () => import(/* webpackChunkName: "temporada" */ '../views/Temporada.vue')
+        component: () => import(/* webpackChunkName: "temporada" */ '../views/Temporada.vue'),
+        children: [
+            {
+                path: 'page/:page',
+                component: () => import(/* webpackChunkName: "temporada" */ '../views/Temporada.vue'),
+                props: true,
+                name: 'TemporadaPagina'
+            },
+        ]
     },
     {
         path: '/epsodio/:ep_id',

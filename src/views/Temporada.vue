@@ -56,9 +56,12 @@ export default {
     },
     methods: {
         setPaginator() {
-            let paramsGet = window.location.search;
-            if(paramsGet.indexOf('?page') > -1) {
-                paramsGet = +paramsGet.split('=')[1];
+            //let paramsGet = window.location.search;
+            let paramsGet = window.location.pathname;
+            //if(paramsGet.indexOf('?page') > -1) {
+            if(paramsGet.indexOf('page/') > -1) {
+                //paramsGet = +paramsGet.split('=')[1];
+                paramsGet = +paramsGet.split('page/')[1];
                 this.paged = paramsGet
             }
         },
