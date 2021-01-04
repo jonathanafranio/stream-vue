@@ -55,13 +55,10 @@ export default {
     },
     methods: {
         setPaginator() {
-            //let paramsGet = window.location.search;
-            let paramsGet = window.location.pathname;
-            //if(paramsGet.indexOf('?page') > -1) {
-            if(paramsGet.indexOf('page/') > -1) {
-                //paramsGet = +paramsGet.split('=')[1];
-                paramsGet = +paramsGet.split('page/')[1];
-                this.paged = paramsGet
+            let paramPage = window.location.pathname;
+            if(paramPage.indexOf('page/') > -1) {
+                paramPage = +paramPage.split('page/')[1];
+                this.paged = paramPage
             }
         },
         async fetchInfoSerie(){
