@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="slick-wrap">
         <VueSlickCarousel v-if="carousel" v-bind="settings">
             <div v-for="(item, index) in allItensCarousel" v-bind:key="index">
                 <router-link :to="item.id" :title="item.name">
@@ -7,7 +7,8 @@
                 </router-link>
             </div>
         </VueSlickCarousel>
-        <div class="is-block is-center" v-else>
+        <!--<div class="is-block is-center preload-slick">-->
+        <div class="is-center preload-slick">
             <span class="icon is-large">
                 <i class="fas fa-spinner fa-3x fa-pulse"></i>
             </span>
@@ -32,6 +33,7 @@ export default {
     data() {
         return {
             settings: {
+                lazyLoad: 'ondemand',
                 slidesToShow: 5,
                 slideToScroll: 1,
                 responsive: [

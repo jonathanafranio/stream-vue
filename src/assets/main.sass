@@ -11,6 +11,10 @@ body
   @media screen and (max-width: 1023px)
     width: 100%
 
+.slick-wrap
+  display: flex
+  flex-direction: column
+
 .slick-slide
   div
     float: left
@@ -21,13 +25,32 @@ body
     img
       display: block
       width: 100%
+      max-width: 430px
       transition: all .4s
       opacity: 0.8
+      visibility: hidden
   @media screen and (min-width: 1024px)
     &:hover
       img
         opacity: 1
         transform: scale(1.05)
+  
+  .slick-initialized &
+    img
+      visibility: visible
+
+.preload-slick
+  display: block
+  order: 1
+
+.slick-slider
+  order: 2
+  visibility: hidden
+  &.slick-initialized
+    visibility: visible
+
+.slick-initialized + .preload-slick
+  display: none
 
 .slick-arrow
   width: 3rem
